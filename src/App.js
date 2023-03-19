@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
+import Navi from "./Navi";
+import Category from "./Category";
+import Product from "./Product";
+import Search from "./Search";
+export default class App extends Component {
+  state = { products: [], currentCategory: "", cart: [] };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  addToCart = (product) => {
+    let sepet = this.state.cart;
+
+    let addItem = sepet.find((c) => c.product.id === product.id);
+
+    if (addItem) {
+      addItem.quantity += 1;
+    } else {
+      sepet.push({ product: product, quantity: 1 });
+    }
+
+    this.setState({ cart: sepet });
+  };
+
+  getCategory = (category) => {
+    this.setState(this.setState({ currentCategory: category.categoryName }));
+    this.componentDidMount(category.id);
+  };
+
+  componentDidMount(categoryId) {
+    let url = "http://localhost:3000/products";
+
+    if (categoryId) {
+      url += "?categoryId=" + categoryId;
+    }
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => this.setState({ products: data }));
+  }
+
+  getXIcon = (product) => {
+    let removeCart = this.state.cart.filter((c) => c.product.id !== product.id);
+
+    this.setState({ cart: removeCart });
+  };
+
+  
+  render() {
+    let categoryTitle = { title: "Category" };
+    let productTitle = { title: "Product" };
+    return (
+      <div className="App">
+        <Container>
+          <Row>
+            <Col>
+              <Navi getXIcon={this.getXIcon} cart={this.state.cart} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Search products={this.state.products} />
+              <Category getCategory={this.getCategory} info={categoryTitle} />
+            </Col>
+            <Col>
+              <Product
+                addToCart={this.addToCart}
+                currentCategory={this.state.currentCategory}
+                products={this.state.products}
+                info={productTitle}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
 }
-
-export default App;
