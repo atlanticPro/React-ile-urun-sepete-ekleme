@@ -5,7 +5,7 @@ import Category from "./Category";
 import Product from "./Product";
 import Search from "./Search";
 export default class App extends Component {
-  state = { products: [], currentCategory: "", cart: [] };
+  state = { products: [], currentCategory: "", cart: [],categories: [] };
 
   addToCart = (product) => {
     let sepet = this.state.cart;
@@ -35,6 +35,10 @@ export default class App extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => this.setState({ products: data }));
+
+      fetch("http://localhost:3000/categories")
+      .then((response) => response.json())
+      .then((data) => this.setState({ categories: data }));
   }
 
   getXIcon = (product) => {
@@ -58,7 +62,7 @@ export default class App extends Component {
           <Row>
             <Col>
               <Search products={this.state.products} />
-              <Category getCategory={this.getCategory} info={categoryTitle} />
+              <Category categories={this.state.categories} getCategory={this.getCategory} info={categoryTitle} />
             </Col>
             <Col>
               <Product
