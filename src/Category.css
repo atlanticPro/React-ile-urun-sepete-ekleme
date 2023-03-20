@@ -1,9 +1,15 @@
-.listgrup:hover{
-    background-color: black;
-    color: white;
-    width: 500px;
-    height:80px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
+.listgrup:hover {
+  background-color: grey;
+  color: brown;
+  font-size: 20px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  width: 500px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.child:hover {
+  display: flex;
 }

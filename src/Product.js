@@ -6,7 +6,9 @@ export default class Product extends Component {
     return (
       <div>
         <h3>
-          {this.props.info.title} - {this.props.currentCategory}
+          {this.props.info.title}
+          {!this.props.currentCategory ? "" : " - "}
+          {this.props.currentCategory}
         </h3>
 
         <Table>

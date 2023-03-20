@@ -3,7 +3,6 @@ import { Badge, NavItem, NavLink } from "reactstrap";
 import { GrClose } from "react-icons/gr";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
-
 export default class CartSummary extends Component {
   renderSummary() {
     return (

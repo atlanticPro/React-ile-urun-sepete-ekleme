@@ -4,6 +4,7 @@ import Navi from "./Navi";
 import Category from "./Category";
 import Product from "./Product";
 import Search from "./Search";
+import alertify from "alertifyjs";
 export default class App extends Component {
   state = {
     products: [],
@@ -25,6 +26,8 @@ export default class App extends Component {
     }
 
     this.setState({ cart: sepet });
+    alertify.set("notifier", "position", "top-right");
+    alertify.success(`Sepete Eklendi!`);
   };
 
   getCategory = (category) => {
@@ -52,8 +55,9 @@ export default class App extends Component {
   }
 
   getXIcon = (product) => {
+    alertify.set("notifier", "position", "top-right");
+    alertify.error(`Ürün Sepetten silindi!`);
     let removeCart = this.state.cart.filter((c) => c.product.id !== product.id);
-
     this.setState({ cart: removeCart });
   };
 

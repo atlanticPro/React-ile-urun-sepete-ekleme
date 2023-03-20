@@ -6,16 +6,18 @@ import "./Category.css";
 export default class Category extends Component {
   fullRender() {
     return (
-      <div style={{ width: "400px", textAlign: "center"}} className="mt-5">
+      <div style={{ width: "400px", textAlign: "center" }} className="mt-5">
         <ListGroup>
           {this.props.categories.map((category) => (
-            <ListGroupItem
-              className="listgrup"
-              onClick={() => this.props.getCategory(category)}
-              key={category.id}
-            >
-              <SiTemporal /> {category.categoryName}
-            </ListGroupItem>
+            <div className="child">
+              <ListGroupItem
+                className="listgrup"
+                onClick={() => this.props.getCategory(category)}
+                key={category.id}
+              >
+                <SiTemporal /> {category.categoryName}
+              </ListGroupItem>
+            </div>
           ))}
         </ListGroup>
       </div>
