@@ -5,7 +5,13 @@ import Category from "./Category";
 import Product from "./Product";
 import Search from "./Search";
 export default class App extends Component {
-  state = { products: [], currentCategory: "", cart: [],categories: [] };
+  state = {
+    products: [],
+    currentCategory: "",
+    cart: [],
+    categories: [],
+    filterText: "",
+  };
 
   addToCart = (product) => {
     let sepet = this.state.cart;
@@ -22,23 +28,27 @@ export default class App extends Component {
   };
 
   getCategory = (category) => {
-    this.setState(this.setState({ currentCategory: category.categoryName }));
+    this.setState({ currentCategory: category.categoryName });
     this.componentDidMount(category.id);
   };
 
   componentDidMount(categoryId) {
-    let url = "http://localhost:3000/products";
+    (() => {
+      let url = "http://localhost:3000/products";
 
-    if (categoryId) {
-      url += "?categoryId=" + categoryId;
-    }
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => this.setState({ products: data }));
+      if (categoryId) {
+        url += "?categoryId=" + categoryId;
+      }
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => this.setState({ products: data }));
+    })();
 
+    (() => {
       fetch("http://localhost:3000/categories")
-      .then((response) => response.json())
-      .then((data) => this.setState({ categories: data }));
+        .then((response) => response.json())
+        .then((data) => this.setState({ categories: data }));
+    })();
   }
 
   getXIcon = (product) => {
@@ -47,10 +57,10 @@ export default class App extends Component {
     this.setState({ cart: removeCart });
   };
 
-  
   render() {
     let categoryTitle = { title: "Category" };
     let productTitle = { title: "Product" };
+
     return (
       <div className="App">
         <Container>
@@ -61,8 +71,15 @@ export default class App extends Component {
           </Row>
           <Row>
             <Col>
-              <Search products={this.state.products} />
-              <Category categories={this.state.categories} getCategory={this.getCategory} info={categoryTitle} />
+              <Search
+                categories={this.state.categories}
+                products={this.state.products}
+              />
+              <Category
+                categories={this.state.categories}
+                getCategory={this.getCategory}
+                info={categoryTitle}
+              />
             </Col>
             <Col>
               <Product
