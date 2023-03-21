@@ -11,23 +11,7 @@ export default class App extends Component {
     currentCategory: "",
     cart: [],
     categories: [],
-    filterText: "",
-  };
-
-  addToCart = (product) => {
-    let sepet = this.state.cart;
-
-    let addItem = sepet.find((c) => c.product.id === product.id);
-
-    if (addItem) {
-      addItem.quantity += 1;
-    } else {
-      sepet.push({ product: product, quantity: 1 });
-    }
-
-    this.setState({ cart: sepet });
-    alertify.set("notifier", "position", "top-right");
-    alertify.success(`Sepete Eklendi!`);
+    categoryFilter: [],
   };
 
   getCategory = (category) => {
@@ -54,6 +38,22 @@ export default class App extends Component {
     })();
   }
 
+  addToCart = (product) => {
+    let sepet = this.state.cart;
+
+    let addItem = sepet.find((c) => c.product.id === product.id);
+
+    if (addItem) {
+      addItem.quantity += 1;
+    } else {
+      sepet.push({ product: product, quantity: 1 });
+    }
+
+    this.setState({ cart: sepet });
+    alertify.set("notifier", "position", "top-right");
+    alertify.success(`Sepete Eklendi!`);
+  };
+
   getXIcon = (product) => {
     alertify.set("notifier", "position", "top-right");
     alertify.error(`Ürün Sepetten silindi!`);
@@ -61,10 +61,18 @@ export default class App extends Component {
     this.setState({ cart: removeCart });
   };
 
+  getCategoryFilter = (e) => {
+    this.setState({
+      categoryFilter: this.state.categories.filter((filtre) =>
+        filtre.categoryName.includes(e.target.value)
+      ),
+    });
+  };
+
   render() {
     let categoryTitle = { title: "Category" };
     let productTitle = { title: "Product" };
-
+    console.log(this.state.categoryFilter);
     return (
       <div className="App">
         <Container>
@@ -76,10 +84,12 @@ export default class App extends Component {
           <Row>
             <Col>
               <Search
+                getCategoryFilter={this.getCategoryFilter}
                 categories={this.state.categories}
                 products={this.state.products}
               />
               <Category
+                categoryFilter={this.state.categoryFilter}
                 categories={this.state.categories}
                 getCategory={this.getCategory}
                 info={categoryTitle}

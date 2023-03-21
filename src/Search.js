@@ -14,6 +14,7 @@ export default class Search extends Component {
       <div className="text-center">
         <input
           placeholder="Kategori İsmi Giriniz"
+          onChange={this.props.getCategoryFilter}
           style={myStyle}
         />
       </div>
